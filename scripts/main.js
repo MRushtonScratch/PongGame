@@ -58,9 +58,9 @@
             // {src:"credits.png", id:"credits"},
             {src:"assets/paddle.png", id:"cpu"},
             {src:"assets/paddle.png", id:"player"},
-            {src:"assets/ball.png", id:"ball"}
-            // {src:"win.png", id:"win"},
-            // {src:"lose.png", id:"lose"},
+            {src:"assets/ball.png", id:"ball"},
+            {src:"assets/win.png", id:"win"},
+            {src:"assets/lose.png", id:"lose"},
             // {src:"playerScore.mp3|playerScore.ogg", id:"playerScore"},
             // {src:"enemyScore.mp3|enemyScore.ogg", id:"enemyScore"},
             // {src:"hit.mp3|hit.ogg", id:"hit"},
@@ -162,8 +162,7 @@
 	}
 	
 	
-	function reset() {
-		
+	function reset() {		
 		_self.ball.y = 160 -15;
 		_self.playerScore.y = 20;
 		_self.cpuScore.y = 20;
@@ -189,19 +188,30 @@
 		_self.bg.onPress = null;
 		
 		if(evt === "win") {
-			_self.win.x = 140;
-			_self.win.y = -90;
+			_self.win.x = 0;
+			_self.win.y = -640;
 			
 			_self.stage.addChild(_self.win);
-			Tween.get(_self.win).to({y:115}, 300);			
-		} else {
-			
-			_self.lose.x = 140;
-			_self.lose.y = -90;
+			Tween.get(_self.win).to({y:0}, 300);
+			_self.win.onPress = restartGame;				
+		} else {			
+			_self.lose.x = 0;
+			_self.lose.y = -640;
 			
 			_self.stage.addChild(_self.lose);
-			Tween.get(_self.lose).to({y:115}, 300);
-		}		
+			Tween.get(_self.lose).to({y:0}, 300);
+			
+			_self.lose.onPress = restartGame;	
+		}
+	}
+	
+	function restartGame () {
+		_self.titleView = new Container();
+		_self.stage.removeChild(_self.win);
+		_self.stage.removeChild(_self.lose);
+		_self.ySpeed = 5;
+		_self.xSpeed = 5;
+		addTitleView();
 	}
 	
 	function update() {
@@ -272,10 +282,10 @@
 		}
 		
 		// check for win
-		if(_self.playerScore.text === 1) {
+		if(_self.playerScore.text === 10) {
 			alert("win");
 		}
-		if(_self.cpuScore.text === 1) {
+		if(_self.cpuScore.text === 10) {
 			alert("lose");
 		}
 	}
